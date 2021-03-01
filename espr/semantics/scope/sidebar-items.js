@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["ScopeType","Identifier in EXPRESS language must be one of scopes described in \"Table 9 – Scope and identifier defining items\""]],"struct":[["Scope","Scope declaration"]]});

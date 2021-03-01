@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["SemanticError","Semantic errors"]],"mod":[["entity",""],["namespace",""],["schema",""],["scope",""]],"struct":[["IR","Intermediate Representation"]],"trait":[["Legalize","Legalize partial parsed input into corresponding intermediate representation"]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"mod":[["array",""],["logical",""],["parser","Parse ASCII exchange structure defined by ISO-10303-21"]]});

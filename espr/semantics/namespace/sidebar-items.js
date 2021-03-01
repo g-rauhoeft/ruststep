@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["IdentifierType",""],["TypeRef",""]],"struct":[["Namespace",""]]});
