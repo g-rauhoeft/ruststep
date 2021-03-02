@@ -1,4 +1,4 @@
 (function() {var implementors = {};
 implementors["espr"] = [{"text":"impl PartialOrd&lt;ScopeType&gt; for ScopeType","synthetic":false,"types":[]},{"text":"impl PartialOrd&lt;Scope&gt; for Scope","synthetic":false,"types":[]}];
-implementors["ruststep"] = [{"text":"impl&lt;T:&nbsp;PartialOrd, E:&nbsp;PartialOrd&gt; PartialOrd&lt;Array&lt;T, E&gt;&gt; for Array&lt;T, E&gt;","synthetic":false,"types":[]},{"text":"impl PartialOrd&lt;Logical&gt; for Logical","synthetic":false,"types":[]}];
+implementors["ruststep"] = [{"text":"impl PartialOrd&lt;Logical&gt; for Logical","synthetic":false,"types":[]}];
 if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

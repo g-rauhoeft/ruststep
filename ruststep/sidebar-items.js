@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["array",""],["logical",""],["parser","Parse ASCII exchange structure defined by ISO-10303-21"]]});
+initSidebarItems({"mod":[["parser","Parse ASCII exchange structure defined by ISO-10303-21"],["primitive","Primitive types exists in STEP but not in Rust"]]});
