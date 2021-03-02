@@ -1,1 +1,0 @@
-initSidebarItems({"enum":[["AccessType",""],["AttrFlag",""],["CommitMode",""],["ErrorKind","error codes taken from 10303-23, Jan 28, 1997. ISO TC184/SC4/WG11 N 004"],["ImplementationClass",""],["PrimitiveType",""]]});
