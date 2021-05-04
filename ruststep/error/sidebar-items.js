@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["Error",""]],"type":[["Result",""]]});
+initSidebarItems({"enum":[["Error",""]],"struct":[["TokenizeFailed","Error while tokenizing STEP input"]],"type":[["Result",""]]});

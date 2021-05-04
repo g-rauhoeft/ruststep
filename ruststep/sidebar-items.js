@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["error",""],["parser","Parse ASCII exchange structure defined by ISO-10303-21"],["primitive","Primitive types exists in STEP but not in Rust"]]});
+initSidebarItems({"mod":[["ap000","Manually generated schema definitions corresponding following EXPRESS Schema"],["ap201",""],["ast","Data structures in STEP file"],["error",""],["header",""],["parser","Tokenize ASCII exchange structure (or STEP-file) defined by ISO-10303-21"],["primitive","Primitive types appears in STEP and not defined in Rust"],["tables","Traits for espr-generated structures"]]});

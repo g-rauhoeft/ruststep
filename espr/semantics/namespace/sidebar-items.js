@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["IdentifierType",""],["TypeRef",""]],"struct":[["Namespace",""]]});
+initSidebarItems({"struct":[["Names","Names in each scopes"],["Namespace",""]]});

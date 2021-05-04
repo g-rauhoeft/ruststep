@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["parser","Tokenize EXPRESS language into [SyntaxTree]"],["semantics","Legalize [SyntaxTree] into [IR]"]]});
+initSidebarItems({"mod":[["ast","Abstract Syntax Tree (AST) of EXPRESS Language"],["parser","Parser combinator for EXPRESS language"],["semantics","Legalize [SyntaxTree] into [IR]"]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["A","Corresponds to `ENTITY a`"],["AHolder","Holder for [A]"],["Ap000","Tables including entities `A`, `B`, and `C` as their holders."],["B","Corresponds to `ENTITY b`"],["BHolder","Holder for [B]"],["Base",""],["C","Corresponds to `ENTITY c`"],["CHolder","Holder for [C]"],["Sub",""]],"trait":[["BaseAny","custom `Any` trait for entity `a`"]]});

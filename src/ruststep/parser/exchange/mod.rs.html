@@ -56,12 +56,6 @@
 <span id="53">53</span>
 <span id="54">54</span>
 <span id="55">55</span>
-<span id="56">56</span>
-<span id="57">57</span>
-<span id="58">58</span>
-<span id="59">59</span>
-<span id="60">60</span>
-<span id="61">61</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! Parser for exchange structure</span>
 
@@ -77,17 +71,11 @@
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">parameter</span>::<span class="kw-2">*</span>;
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">reference</span>::<span class="kw-2">*</span>;
 
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">parser</span>::{<span class="ident">combinator</span>::<span class="kw-2">*</span>, <span class="ident">token</span>::<span class="kw-2">*</span>};
+<span class="kw">use</span> <span class="kw">crate</span>::{
+    <span class="ident">ast</span>::<span class="kw-2">*</span>,
+    <span class="ident">parser</span>::{<span class="ident">combinator</span>::<span class="kw-2">*</span>, <span class="ident">token</span>::<span class="kw-2">*</span>},
+};
 <span class="kw">use</span> <span class="ident">nom</span>::<span class="ident">Parser</span>;
-
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Exchange</span> {
-    <span class="kw">pub</span> <span class="ident">header</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Record</span><span class="op">&gt;</span>,
-    <span class="kw">pub</span> <span class="ident">anchor</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Anchor</span><span class="op">&gt;</span>,
-    <span class="kw">pub</span> <span class="ident">reference</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">ReferenceEntry</span><span class="op">&gt;</span>,
-    <span class="kw">pub</span> <span class="ident">data</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">DataSection</span><span class="op">&gt;</span>,
-    <span class="kw">pub</span> <span class="ident">signature</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
-}
 
 <span class="doccomment">/// exchange_file = `ISO-10303-21;`</span>
 <span class="doccomment">///                 [header_section]</span>
@@ -125,4 +113,5 @@
         .<span class="ident">parse</span>(<span class="ident">input</span>)
 }
 </pre></div>
-</section><section id="search" class="content hidden"></section><section class="footer"></section><script>window.rootPath = "../../../../";window.currentCrate = "ruststep";</script><script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script><script defer src="../../../../search-index.js"></script></body></html>
+</section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="ruststep"></div>
+    <script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script><script defer src="../../../../search-index.js"></script></body></html>

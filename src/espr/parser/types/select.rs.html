@@ -80,18 +80,12 @@
 <span id="77">77</span>
 <span id="78">78</span>
 <span id="79">79</span>
+<span id="80">80</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="kw">super</span>::{
     <span class="kw">super</span>::{<span class="ident">combinator</span>::<span class="kw-2">*</span>, <span class="ident">types</span>::<span class="ident">named_types</span>},
     <span class="kw-2">*</span>,
 };
-
-<span class="doccomment">/// Output of [select_type]</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">SelectType</span> {
-    <span class="kw">pub</span> <span class="ident">extensiblity</span>: <span class="ident">Extensiblity</span>,
-    <span class="kw">pub</span> <span class="ident">types</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
-}
 
 <span class="doccomment">/// 301 select_list = `(` [named_types] { `,` [named_types] } `)` .</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">select_list</span>(<span class="ident">input</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ParseResult</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span><span class="op">&gt;</span> {
@@ -109,36 +103,36 @@
 }
 
 <span class="doccomment">/// 302 select_type = \[ EXTENSIBLE \[ GENERIC_ENTITY \] \] SELECT \[ [select_list] | [select_extension] \] .</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">select_type</span>(<span class="ident">input</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ParseResult</span><span class="op">&lt;</span><span class="ident">SelectType</span><span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">select_type</span>(<span class="ident">input</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ParseResult</span><span class="op">&lt;</span><span class="ident">UnderlyingType</span><span class="op">&gt;</span> {
     <span class="comment">// FIXME support select_extension</span>
 
     <span class="comment">// `GENERIC_ENTITY` only appears in `select_type` declaration.</span>
-    <span class="kw">let</span> <span class="ident">extensiblity</span> <span class="op">=</span> <span class="ident">tuple</span>((
+    <span class="kw">let</span> <span class="ident">extensibility</span> <span class="op">=</span> <span class="ident">tuple</span>((
         <span class="ident">tag</span>(<span class="string">&quot;EXTENSIBLE&quot;</span>),
         <span class="ident">opt</span>(<span class="ident">tuple</span>((<span class="ident">spaces</span>, <span class="ident">tag</span>(<span class="string">&quot;GENERIC_ENTITY&quot;</span>)))),
     ))
     .<span class="ident">map</span>(<span class="op">|</span>(<span class="ident">_extensible</span>, <span class="ident">opt</span>)<span class="op">|</span> {
         <span class="kw">if</span> <span class="ident">opt</span>.<span class="ident">is_some</span>() {
-            <span class="ident">Extensiblity</span>::<span class="ident">GenericEntity</span>
+            <span class="ident">Extensibility</span>::<span class="ident">GenericEntity</span>
         } <span class="kw">else</span> {
-            <span class="ident">Extensiblity</span>::<span class="ident">Extensible</span>
+            <span class="ident">Extensibility</span>::<span class="ident">Extensible</span>
         }
     });
 
     <span class="ident">tuple</span>((
-        <span class="ident">opt</span>(<span class="ident">tuple</span>((<span class="ident">extensiblity</span>, <span class="ident">spaces</span>))),
+        <span class="ident">opt</span>(<span class="ident">tuple</span>((<span class="ident">extensibility</span>, <span class="ident">spaces</span>))),
         <span class="ident">tag</span>(<span class="string">&quot;SELECT&quot;</span>),
         <span class="ident">select_list</span>,
     ))
     .<span class="ident">map</span>(<span class="op">|</span>(<span class="ident">opt</span>, <span class="ident">_select</span>, <span class="ident">types</span>)<span class="op">|</span> {
-        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>((<span class="ident">extensiblity</span>, <span class="ident">_spaces</span>)) <span class="op">=</span> <span class="ident">opt</span> {
-            <span class="ident">SelectType</span> {
-                <span class="ident">extensiblity</span>,
+        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>((<span class="ident">extensibility</span>, <span class="ident">_spaces</span>)) <span class="op">=</span> <span class="ident">opt</span> {
+            <span class="ident">UnderlyingType</span>::<span class="ident">Select</span> {
+                <span class="ident">extensibility</span>,
                 <span class="ident">types</span>,
             }
         } <span class="kw">else</span> {
-            <span class="ident">SelectType</span> {
-                <span class="ident">extensiblity</span>: <span class="ident">Extensiblity</span>::<span class="prelude-val">None</span>,
+            <span class="ident">UnderlyingType</span>::<span class="ident">Select</span> {
+                <span class="ident">extensibility</span>: <span class="ident">Extensibility</span>::<span class="prelude-val">None</span>,
                 <span class="ident">types</span>,
             }
         }
@@ -155,10 +149,19 @@
     <span class="kw">fn</span> <span class="ident">select</span>() {
         <span class="kw">let</span> (<span class="ident">res</span>, (<span class="ident">s</span>, <span class="ident">_remarks</span>)) <span class="op">=</span> <span class="kw">super</span>::<span class="ident">select_type</span>(<span class="string">&quot;SELECT (a, b)&quot;</span>).<span class="ident">finish</span>().<span class="ident">unwrap</span>();
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">res</span>, <span class="string">&quot;&quot;</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">s</span>.<span class="ident">extensiblity</span>, <span class="ident">Extensiblity</span>::<span class="prelude-val">None</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">s</span>.<span class="ident">types</span>[<span class="number">0</span>], <span class="string">&quot;a&quot;</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">s</span>.<span class="ident">types</span>[<span class="number">1</span>], <span class="string">&quot;b&quot;</span>);
+        <span class="kw">if</span> <span class="kw">let</span> <span class="ident">UnderlyingType</span>::<span class="ident">Select</span> {
+            <span class="ident">extensibility</span>,
+            <span class="ident">types</span>,
+        } <span class="op">=</span> <span class="ident">s</span>
+        {
+            <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">extensibility</span>, <span class="ident">Extensibility</span>::<span class="prelude-val">None</span>);
+            <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">types</span>[<span class="number">0</span>], <span class="string">&quot;a&quot;</span>);
+            <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">types</span>[<span class="number">1</span>], <span class="string">&quot;b&quot;</span>);
+        } <span class="kw">else</span> {
+            <span class="macro">panic</span><span class="macro">!</span>()
+        }
     }
 }
 </pre></div>
-</section><section id="search" class="content hidden"></section><section class="footer"></section><script>window.rootPath = "../../../../";window.currentCrate = "espr";</script><script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script><script defer src="../../../../search-index.js"></script></body></html>
+</section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="espr"></div>
+    <script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script><script defer src="../../../../search-index.js"></script></body></html>

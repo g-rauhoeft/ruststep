@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Declaration",""],["InterfaceSpec",""],["ProcedureCallName",""],["Statement",""]],"struct":[["Constant",""],["DomainRule",""],["FormalParameter",""],["Function",""],["LocalVariable",""],["Procedure",""],["RepeatControl",""],["RepeatIncrement",""],["Rule",""],["WhereClause",""]]});

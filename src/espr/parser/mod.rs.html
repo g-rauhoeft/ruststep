@@ -34,14 +34,68 @@
 <span id="31">31</span>
 <span id="32">32</span>
 <span id="33">33</span>
+<span id="34">34</span>
+<span id="35">35</span>
+<span id="36">36</span>
+<span id="37">37</span>
+<span id="38">38</span>
+<span id="39">39</span>
+<span id="40">40</span>
+<span id="41">41</span>
+<span id="42">42</span>
+<span id="43">43</span>
+<span id="44">44</span>
+<span id="45">45</span>
+<span id="46">46</span>
+<span id="47">47</span>
+<span id="48">48</span>
+<span id="49">49</span>
+<span id="50">50</span>
+<span id="51">51</span>
+<span id="52">52</span>
+<span id="53">53</span>
+<span id="54">54</span>
+<span id="55">55</span>
+<span id="56">56</span>
+<span id="57">57</span>
+<span id="58">58</span>
+<span id="59">59</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="doccomment">//! Tokenize EXPRESS language into [SyntaxTree]</span>
+<span class="doccomment">//! Parser combinator for EXPRESS language</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//! This submodule responsible for tokenize of EXPRESS language input into a [SyntaxTree] struct.</span>
-<span class="doccomment">//! Following steps of compile, i.e. semantics analysis and Rust code generation will be handled by</span>
-<span class="doccomment">//! other submodules.</span>
+<span class="doccomment">//! This submodule responsible for tokenize of EXPRESS language input into a [SyntaxTree] struct,</span>
+<span class="doccomment">//! and provides parser combinators based on [nom](https://github.com/Geal/nom).</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//! This submodule is based on [nom](https://github.com/Geal/nom) parser combinater.</span>
+<span class="doccomment">//! Most parsers correspond to EXPRESS language grammers defined in [ISO-10303-11].</span>
+<span class="doccomment">//! Each documentation of the parsers contains wirth syntax notation (WSN).</span>
+<span class="doccomment">//! For example,</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! ```text</span>
+<span class="doccomment">//! 124 digit = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 .</span>
+<span class="doccomment">//! ```</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! [digit] matches to a digit character.</span>
+<span class="doccomment">//! The head number, `124`, is the serial number of this WSN in [ISO-10303-11].</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! [ISO-10303-11]: https://www.iso.org/standard/38047.html</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! Remarks</span>
+<span class="doccomment">//! --------</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! EXPRESS language has two forms of &quot;remarks&quot; which corresponds to &quot;comments&quot; in Rust</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! ```text</span>
+<span class="doccomment">//! (* this is called &quot;embedded remark&quot; *)</span>
+<span class="doccomment">//! -- this is called &quot;tail remark&quot;</span>
+<span class="doccomment">//! ```</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! Each of remarks are handled by [embedded_remark] and [tail_remark].</span>
+<span class="doccomment">//! For handling remarks appear in arbitrary position,</span>
+<span class="doccomment">//! we re-define nom&#39;s combinators in [combinator] to stack remarks onto a `Vec&lt;Remark&gt;` in appeared order.</span>
+<span class="doccomment">//!</span>
+
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">doc</span>)]</span>
+<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ast</span>::<span class="kw-2">*</span>;
 
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">combinator</span>;
 
@@ -54,7 +108,6 @@
 <span class="kw">mod</span> <span class="ident">schema</span>;
 <span class="kw">mod</span> <span class="ident">stmt</span>;
 <span class="kw">mod</span> <span class="ident">subsuper</span>;
-<span class="kw">mod</span> <span class="ident">syntax_tree</span>;
 <span class="kw">mod</span> <span class="ident">types</span>;
 
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">basis</span>::<span class="kw-2">*</span>;
@@ -66,7 +119,7 @@
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">schema</span>::<span class="kw-2">*</span>;
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">stmt</span>::<span class="kw-2">*</span>;
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">subsuper</span>::<span class="kw-2">*</span>;
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">syntax_tree</span>::<span class="kw-2">*</span>;
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">types</span>::<span class="kw-2">*</span>;
 </pre></div>
-</section><section id="search" class="content hidden"></section><section class="footer"></section><script>window.rootPath = "../../../";window.currentCrate = "espr";</script><script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script><script defer src="../../../search-index.js"></script></body></html>
+</section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="espr"></div>
+    <script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script><script defer src="../../../search-index.js"></script></body></html>

@@ -53,63 +53,18 @@
 <span id="50">50</span>
 <span id="51">51</span>
 <span id="52">52</span>
-<span id="53">53</span>
-<span id="54">54</span>
-<span id="55">55</span>
-<span id="56">56</span>
-<span id="57">57</span>
-<span id="58">58</span>
-<span id="59">59</span>
-<span id="60">60</span>
-<span id="61">61</span>
-<span id="62">62</span>
-<span id="63">63</span>
-<span id="64">64</span>
-<span id="65">65</span>
-<span id="66">66</span>
-<span id="67">67</span>
-<span id="68">68</span>
-<span id="69">69</span>
-<span id="70">70</span>
-<span id="71">71</span>
-<span id="72">72</span>
-<span id="73">73</span>
-<span id="74">74</span>
-<span id="75">75</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">parser</span>::{<span class="ident">combinator</span>::<span class="kw-2">*</span>, <span class="ident">token</span>::<span class="kw-2">*</span>};
+<span class="kw">use</span> <span class="kw">crate</span>::{
+    <span class="ident">ast</span>::<span class="kw-2">*</span>,
+    <span class="ident">parser</span>::{<span class="ident">combinator</span>::<span class="kw-2">*</span>, <span class="ident">token</span>::<span class="kw-2">*</span>},
+};
 <span class="kw">use</span> <span class="ident">nom</span>::{<span class="ident">branch</span>::<span class="ident">alt</span>, <span class="ident">combinator</span>::<span class="ident">value</span>, <span class="ident">Parser</span>};
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>)]</span>
-<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">UntypedParameter</span> {
-    <span class="ident">Integer</span>(<span class="ident">i64</span>),
-    <span class="ident">Real</span>(<span class="ident">f64</span>),
-    <span class="ident">String</span>(<span class="ident">String</span>),
-    <span class="ident">Enumeration</span>(<span class="ident">String</span>),
-    <span class="doccomment">/// The special token dollar sign (`$`) is used to represent an object whose value is not provided in the exchange structure.</span>
-    <span class="ident">NotProvided</span>,
-    <span class="doccomment">/// A reference to entity or value, parsed by [rhs_occurrence_name]</span>
-    <span class="ident">RValue</span>(<span class="ident">RValue</span>),
-    <span class="doccomment">/// List of other parameters</span>
-    <span class="ident">List</span>(<span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Parameter</span><span class="op">&gt;</span>),
-}
-
 <span class="doccomment">/// list = `(` \[ [parameter] { `,` [parameter] } \] `)` .</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">list</span>(<span class="ident">input</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ParseResult</span><span class="op">&lt;</span><span class="ident">UntypedParameter</span><span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">list</span>(<span class="ident">input</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ParseResult</span><span class="op">&lt;</span><span class="ident">Parameter</span><span class="op">&gt;</span> {
     <span class="ident">tuple_</span>((<span class="ident">char_</span>(<span class="string">&#39;(&#39;</span>), <span class="ident">comma_separated</span>(<span class="ident">parameter</span>), <span class="ident">char_</span>(<span class="string">&#39;)&#39;</span>)))
-        .<span class="ident">map</span>(<span class="op">|</span>(<span class="ident">_open</span>, <span class="ident">params</span>, <span class="ident">_close</span>)<span class="op">|</span> <span class="ident">UntypedParameter</span>::<span class="ident">List</span>(<span class="ident">params</span>))
+        .<span class="ident">map</span>(<span class="op">|</span>(<span class="ident">_open</span>, <span class="ident">params</span>, <span class="ident">_close</span>)<span class="op">|</span> <span class="ident">Parameter</span>::<span class="ident">List</span>(<span class="ident">params</span>))
         .<span class="ident">parse</span>(<span class="ident">input</span>)
-}
-
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>)]</span>
-<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Parameter</span> {
-    <span class="ident">Typed</span> {
-        <span class="ident">name</span>: <span class="ident">String</span>,
-        <span class="ident">ty</span>: <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">Parameter</span><span class="op">&gt;</span>,
-    },
-    <span class="ident">Untyped</span>(<span class="ident">UntypedParameter</span>),
-    <span class="doccomment">/// `*`</span>
-    <span class="ident">Omitted</span>,
 }
 
 <span class="doccomment">/// parameter = [typed_parameter] | [untyped_parameter] | [omitted_parameter] .</span>
@@ -130,16 +85,15 @@
 <span class="doccomment">/// untyped_parameter = `$` | [integer] | [real] | [string] | [rhs_occurrence_name] | [enumeration] | binary | [list] .</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">untyped_parameter</span>(<span class="ident">input</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ParseResult</span><span class="op">&lt;</span><span class="ident">Parameter</span><span class="op">&gt;</span> {
     <span class="ident">alt</span>((
-        <span class="ident">char_</span>(<span class="string">&#39;$&#39;</span>).<span class="ident">map</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">UntypedParameter</span>::<span class="ident">NotProvided</span>),
-        <span class="ident">real</span>.<span class="ident">map</span>(<span class="ident">UntypedParameter</span>::<span class="ident">Real</span>),
-        <span class="ident">integer</span>.<span class="ident">map</span>(<span class="ident">UntypedParameter</span>::<span class="ident">Integer</span>),
-        <span class="ident">string</span>.<span class="ident">map</span>(<span class="ident">UntypedParameter</span>::<span class="ident">String</span>),
-        <span class="ident">rhs_occurrence_name</span>.<span class="ident">map</span>(<span class="ident">UntypedParameter</span>::<span class="ident">RValue</span>),
-        <span class="ident">enumeration</span>.<span class="ident">map</span>(<span class="ident">UntypedParameter</span>::<span class="ident">Enumeration</span>),
+        <span class="ident">char_</span>(<span class="string">&#39;$&#39;</span>).<span class="ident">map</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">Parameter</span>::<span class="ident">NotProvided</span>),
+        <span class="ident">real</span>.<span class="ident">map</span>(<span class="ident">Parameter</span>::<span class="ident">Real</span>),
+        <span class="ident">integer</span>.<span class="ident">map</span>(<span class="ident">Parameter</span>::<span class="ident">Integer</span>),
+        <span class="ident">string</span>.<span class="ident">map</span>(<span class="ident">Parameter</span>::<span class="ident">String</span>),
+        <span class="ident">rhs_occurrence_name</span>.<span class="ident">map</span>(<span class="ident">Parameter</span>::<span class="ident">RValue</span>),
+        <span class="ident">enumeration</span>.<span class="ident">map</span>(<span class="ident">Parameter</span>::<span class="ident">Enumeration</span>),
         <span class="comment">// FIXME binary</span>
         <span class="ident">list</span>,
     ))
-    .<span class="ident">map</span>(<span class="ident">Parameter</span>::<span class="ident">Untyped</span>)
     .<span class="ident">parse</span>(<span class="ident">input</span>)
 }
 
@@ -153,4 +107,5 @@
     <span class="ident">comma_separated</span>(<span class="ident">parameter</span>).<span class="ident">parse</span>(<span class="ident">input</span>)
 }
 </pre></div>
-</section><section id="search" class="content hidden"></section><section class="footer"></section><script>window.rootPath = "../../../../";window.currentCrate = "ruststep";</script><script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script><script defer src="../../../../search-index.js"></script></body></html>
+</section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="ruststep"></div>
+    <script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script><script defer src="../../../../search-index.js"></script></body></html>

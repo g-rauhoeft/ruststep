@@ -185,43 +185,9 @@
 <span id="182">182</span>
 <span id="183">183</span>
 <span id="184">184</span>
-<span id="185">185</span>
-<span id="186">186</span>
-<span id="187">187</span>
-<span id="188">188</span>
-<span id="189">189</span>
-<span id="190">190</span>
-<span id="191">191</span>
-<span id="192">192</span>
-<span id="193">193</span>
-<span id="194">194</span>
-<span id="195">195</span>
-<span id="196">196</span>
-<span id="197">197</span>
-<span id="198">198</span>
-<span id="199">199</span>
-<span id="200">200</span>
-<span id="201">201</span>
-<span id="202">202</span>
-<span id="203">203</span>
-<span id="204">204</span>
-<span id="205">205</span>
-<span id="206">206</span>
-<span id="207">207</span>
-<span id="208">208</span>
-<span id="209">209</span>
-<span id="210">210</span>
-<span id="211">211</span>
-<span id="212">212</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="kw">super</span>::{<span class="ident">combinator</span>::<span class="kw-2">*</span>, <span class="ident">identifier</span>::<span class="kw-2">*</span>};
-
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
-<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Constraint</span> {
-    <span class="ident">AbstractEntity</span>,
-    <span class="ident">AbstractSuperType</span>(<span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">SuperTypeExpression</span><span class="op">&gt;</span>),
-    <span class="ident">SuperTypeRule</span>(<span class="ident">SuperTypeExpression</span>),
-}
+<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ast</span>::<span class="ident">entity</span>::<span class="kw-2">*</span>;
 
 <span class="doccomment">/// 164 abstract_entity_declaration = ABSTRACT .</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">abstract_entity_declaration</span>(<span class="ident">input</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ParseResult</span><span class="op">&lt;</span><span class="ident">Constraint</span><span class="op">&gt;</span> {
@@ -242,11 +208,6 @@
     <span class="ident">tuple</span>((<span class="ident">opt</span>(<span class="ident">supertype_constraint</span>), <span class="ident">opt</span>(<span class="ident">subtype_declaration</span>))).<span class="ident">parse</span>(<span class="ident">input</span>)
 }
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">SubTypeDecl</span> {
-    <span class="kw">pub</span> <span class="ident">entity_references</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
-}
-
 <span class="doccomment">/// 318 subtype_declaration = SUBTYPE OF `(` [entity_ref] { `,` [entity_ref] } `)` .</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">subtype_declaration</span>(<span class="ident">input</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ParseResult</span><span class="op">&lt;</span><span class="ident">SubTypeDecl</span><span class="op">&gt;</span> {
     <span class="ident">tuple</span>((
@@ -265,14 +226,6 @@
     <span class="ident">tuple</span>((<span class="ident">tag</span>(<span class="string">&quot;OF&quot;</span>), <span class="ident">char</span>(<span class="string">&#39;(&#39;</span>), <span class="ident">supertype_expression</span>, <span class="ident">char</span>(<span class="string">&#39;)&#39;</span>)))
         .<span class="ident">map</span>(<span class="op">|</span>(<span class="ident">_of</span>, <span class="ident">_open</span>, <span class="ident">expr</span>, <span class="ident">_close</span>)<span class="op">|</span> <span class="ident">expr</span>)
         .<span class="ident">parse</span>(<span class="ident">input</span>)
-}
-
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
-<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">SuperTypeExpression</span> {
-    <span class="ident">Reference</span>(<span class="ident">String</span>),
-    <span class="ident">AndOr</span> { <span class="ident">factors</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">SuperTypeExpression</span><span class="op">&gt;</span> },
-    <span class="ident">And</span> { <span class="ident">terms</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">SuperTypeExpression</span><span class="op">&gt;</span> },
-    <span class="ident">OneOf</span> { <span class="ident">exprs</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">SuperTypeExpression</span><span class="op">&gt;</span> },
 }
 
 <span class="doccomment">/// 319 supertype_constraint = [abstract_entity_declaration] | [abstract_supertype_declaration] | [supertype_rule] .</span>
@@ -353,15 +306,6 @@
     .<span class="ident">parse</span>(<span class="ident">input</span>)
 }
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">SubTypeConstraint</span> {
-    <span class="kw">pub</span> <span class="ident">name</span>: <span class="ident">String</span>,
-    <span class="kw">pub</span> <span class="ident">entity</span>: <span class="ident">String</span>,
-    <span class="kw">pub</span> <span class="ident">is_abstract</span>: <span class="ident">bool</span>,
-    <span class="kw">pub</span> <span class="ident">total_over</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    <span class="kw">pub</span> <span class="ident">expr</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">SuperTypeExpression</span><span class="op">&gt;</span>,
-}
-
 <span class="doccomment">/// 315 subtype_constraint_decl = [subtype_constraint_head] [subtype_constraint_body] END_SUBTYPE_CONSTRAINT `;` .</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">subtype_constraint_decl</span>(<span class="ident">input</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ParseResult</span><span class="op">&lt;</span><span class="ident">SubTypeConstraint</span><span class="op">&gt;</span> {
     <span class="ident">tuple</span>((
@@ -427,4 +371,5 @@
         .<span class="ident">parse</span>(<span class="ident">input</span>)
 }
 </pre></div>
-</section><section id="search" class="content hidden"></section><section class="footer"></section><script>window.rootPath = "../../../";window.currentCrate = "espr";</script><script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script><script defer src="../../../search-index.js"></script></body></html>
+</section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="espr"></div>
+    <script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script><script defer src="../../../search-index.js"></script></body></html>
