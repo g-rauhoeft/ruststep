@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["PlaceHolder","Owned value or reference through entity/value id"]],"trait":[["EntityTable","Trait for tables which pulls an entity (`T`) from an entity id (`u64`)"],["Holder","Trait for resolving a reference through entity id"]]});
+initSidebarItems({"trait":[["EntityTable","Trait for tables which pulls an entity (`T`) from an entity id (`u64`)"],["Holder","Trait for resolving a reference through entity id"]]});
