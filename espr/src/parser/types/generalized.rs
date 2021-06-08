@@ -11,9 +11,9 @@ pub fn named_types(input: &str) -> ParseResult<String> {
 /// 266 parameter_type = [generalized_types] | [named_types] | [simple_types] .
 pub fn parameter_type(input: &str) -> ParseResult<ParameterType> {
     alt((
-        generalized_types,
         named_types.map(ParameterType::Named),
         simple_types.map(ParameterType::Simple),
+        generalized_types,
     ))
     .parse(input)
 }
