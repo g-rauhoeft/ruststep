@@ -6,8 +6,8 @@ use crate::{
 /// 177 attribute_decl = [attribute_id] | [redeclared_attribute] .
 pub fn attribute_decl(input: &str) -> ParseResult<AttributeDecl> {
     alt((
-        redeclared_attribute,
         attribute_id.map(AttributeDecl::Reference),
+        redeclared_attribute,
     ))
     .parse(input)
 }
