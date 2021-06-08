@@ -37,8 +37,8 @@ pub fn qualifiable_factor(input: &str) -> ParseResult<QualifiableFactor> {
 /// other reference types.
 pub fn function_call(input: &str) -> ParseResult<QualifiableFactor> {
     let function_name = alt((
-        built_in_function.map(|f| FunctionCallName::BuiltInFunction(f)),
         function_ref.map(|f| FunctionCallName::Reference(f)),
+        built_in_function.map(|f| FunctionCallName::BuiltInFunction(f)),
     ));
     tuple((function_name, actual_parameter_list))
         .map(|(name, args)| QualifiableFactor::FunctionCall { name, args })
