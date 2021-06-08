@@ -76,7 +76,67 @@ pub const KEYWORDS: &'static [&'static str] = &[
     "var", 
     "where", 
     "while",
-    "with",];
+    "with",
+    
+    // Operators
+    "and",
+    "andor",
+    "div", 
+    "in",
+    "like",
+    "mod",
+    "not",
+    "or",
+    "xor",
+
+    // Constants
+    "?",
+    "self",
+    "const",
+    // TODO: ISO-10303-11 p.112 has an example with e as an identifier,
+    // although the standard states that keywords can't be identifiers.
+    // What is the best approach to deal with this?
+    //"e",  
+    "pi",
+    "false",
+    "true",
+    "unknown",
+
+    // Built-in Functions
+    "abs", 
+    "acos",
+    "asin",
+    "atan",
+    "blength",
+    "cos",
+    "exists",
+    "exp",
+    "format",
+    "hibound",
+    "hiindex",
+    "length",
+    "lobound",
+    "log",
+    "log2",
+    "log10",
+    "loindex",
+    "nvl",
+    "odd",
+    "rolesof",
+    "sin",
+    "sizeof",
+    "sqrt",
+    "tan",
+    "typeof",
+    "usedin",
+    "value",
+    "value_in",
+    "value_unique",
+
+    // Built-in Procedures
+    "insert",
+    "remove",
+    ];
 
 pub fn is_reserved(input: &str) -> bool {
     KEYWORDS.iter().any(|&keyword| keyword == input.to_lowercase())
