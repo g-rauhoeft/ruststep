@@ -97,8 +97,8 @@ pub fn bound_spec(input: &str) -> ParseResult<Bound> {
 /// 240 instantiable_type = [concrete_types] | [entity_ref] .
 pub fn instantiable_type(input: &str) -> ParseResult<UnderlyingType> {
     alt((
-        concrete_types,
         entity_ref.map(|r| UnderlyingType::Reference(r)),
+        concrete_types,
     ))
     .parse(input)
 }
