@@ -1,6 +1,6 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `espr/src/parser/stmt.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>stmt.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
 <link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../espr/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" class="help-button">?</button>
+<link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../espr/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" class="help-button">?</button>
                 <a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
@@ -410,7 +410,7 @@
 <span id="407">407</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="kw">super</span>::{<span class="ident">combinator</span>::<span class="kw-2">*</span>, <span class="ident">expression</span>::<span class="kw-2">*</span>, <span class="ident">identifier</span>::<span class="kw-2">*</span>, <span class="ident">types</span>::<span class="kw-2">*</span>,};
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ast</span>::{<span class="ident">algorithm</span>::<span class="kw-2">*</span>, <span class="ident">expression</span>::<span class="kw-2">*</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::ast</span>::{<span class="ident">algorithm</span>::<span class="kw-2">*</span>, <span class="ident">expression</span>::<span class="kw-2">*</span>};
 
 <span class="doccomment">/// 309 stmt = [alias_stmt] | [assignment_stmt] | [case_stmt] | [compound_stmt] | [escape_stmt] | [if_stmt] | [null_stmt] | [procedure_call_stmt] | [repeat_stmt] | [return_stmt] | [skip_stmt] .</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">stmt</span>(<span class="ident">input</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ParseResult</span><span class="op">&lt;</span><span class="ident">Statement</span><span class="op">&gt;</span> {
@@ -446,7 +446,7 @@
     ))
     .<span class="ident">map</span>(
         <span class="op">|</span>(<span class="ident">_alias</span>, <span class="ident">name</span>, <span class="ident">_for</span>, <span class="ident">dest</span>, <span class="ident">qualifiers</span>, <span class="ident">_semicolon1</span>, <span class="ident">statements</span>, <span class="ident">_end</span>, <span class="ident">_semicolon2</span>)<span class="op">|</span> {
-            <span class="ident">Statement</span>::<span class="ident">Alias</span> {
+            <span class="ident">Statement::Alias</span> {
                 <span class="ident">name</span>,
                 <span class="ident">dest</span>,
                 <span class="ident">qualifiers</span>,
@@ -467,7 +467,7 @@
         <span class="ident">char</span>(<span class="string">&#39;;&#39;</span>),
     ))
     .<span class="ident">map</span>(
-        <span class="op">|</span>(<span class="ident">name</span>, <span class="ident">qualifiers</span>, <span class="ident">_def</span>, <span class="ident">expr</span>, <span class="ident">_semicolon</span>)<span class="op">|</span> <span class="ident">Statement</span>::<span class="ident">Assignment</span> {
+        <span class="op">|</span>(<span class="ident">name</span>, <span class="ident">qualifiers</span>, <span class="ident">_def</span>, <span class="ident">expr</span>, <span class="ident">_semicolon</span>)<span class="op">|</span> <span class="ident">Statement::Assignment</span> {
             <span class="ident">name</span>,
             <span class="ident">qualifiers</span>,
             <span class="ident">expr</span>,
@@ -484,12 +484,12 @@
         <span class="ident">tag</span>(<span class="string">&quot;OF&quot;</span>),
         <span class="ident">many0</span>(<span class="ident">case_action</span>),
         <span class="ident">opt</span>(<span class="ident">tuple</span>((<span class="ident">tag</span>(<span class="string">&quot;OTHERWISE&quot;</span>), <span class="ident">char</span>(<span class="string">&#39;:&#39;</span>), <span class="ident">stmt</span>))
-            .<span class="ident">map</span>(<span class="op">|</span>(<span class="ident">_otherwise</span>, <span class="ident">_colon</span>, <span class="ident">stmt</span>)<span class="op">|</span> <span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">stmt</span>))),
+            .<span class="ident">map</span>(<span class="op">|</span>(<span class="ident">_otherwise</span>, <span class="ident">_colon</span>, <span class="ident">stmt</span>)<span class="op">|</span> <span class="ident">Box::new</span>(<span class="ident">stmt</span>))),
         <span class="ident">tag</span>(<span class="string">&quot;END_CASE&quot;</span>),
         <span class="ident">char</span>(<span class="string">&#39;;&#39;</span>),
     ))
     .<span class="ident">map</span>(
-        <span class="op">|</span>(<span class="ident">_case</span>, <span class="ident">selector</span>, <span class="ident">_of</span>, <span class="ident">actions</span>, <span class="ident">otherwise</span>, <span class="ident">_end</span>, <span class="ident">_semicolon</span>)<span class="op">|</span> <span class="ident">Statement</span>::<span class="ident">Case</span> {
+        <span class="op">|</span>(<span class="ident">_case</span>, <span class="ident">selector</span>, <span class="ident">_of</span>, <span class="ident">actions</span>, <span class="ident">otherwise</span>, <span class="ident">_end</span>, <span class="ident">_semicolon</span>)<span class="op">|</span> <span class="ident">Statement::Case</span> {
             <span class="ident">selector</span>,
             <span class="ident">actions</span>,
             <span class="ident">otherwise</span>,
@@ -518,14 +518,14 @@
 <span class="doccomment">/// 192 compound_stmt = BEGIN [stmt] { [stmt] } END `;` .</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">compound_stmt</span>(<span class="ident">input</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ParseResult</span><span class="op">&lt;</span><span class="ident">Statement</span><span class="op">&gt;</span> {
     <span class="ident">tuple</span>((<span class="ident">tag</span>(<span class="string">&quot;BEGIN&quot;</span>), <span class="ident">many1</span>(<span class="ident">stmt</span>), <span class="ident">tag</span>(<span class="string">&quot;END&quot;</span>), <span class="ident">char</span>(<span class="string">&#39;;&#39;</span>)))
-        .<span class="ident">map</span>(<span class="op">|</span>(<span class="ident">_begin</span>, <span class="ident">statements</span>, <span class="ident">_end</span>, <span class="ident">_semicolon</span>)<span class="op">|</span> <span class="ident">Statement</span>::<span class="ident">Compound</span> { <span class="ident">statements</span> })
+        .<span class="ident">map</span>(<span class="op">|</span>(<span class="ident">_begin</span>, <span class="ident">statements</span>, <span class="ident">_end</span>, <span class="ident">_semicolon</span>)<span class="op">|</span> <span class="ident">Statement::Compound</span> { <span class="ident">statements</span> })
         .<span class="ident">parse</span>(<span class="ident">input</span>)
 }
 
 <span class="doccomment">/// 214 escape_stmt = ESCAPE `;` .</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">escape_stmt</span>(<span class="ident">input</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ParseResult</span><span class="op">&lt;</span><span class="ident">Statement</span><span class="op">&gt;</span> {
     <span class="ident">tuple</span>((<span class="ident">tag</span>(<span class="string">&quot;ESCAPE&quot;</span>), <span class="ident">char</span>(<span class="string">&#39;;&#39;</span>)))
-        .<span class="ident">map</span>(<span class="op">|</span>(<span class="ident">_skip</span>, <span class="ident">_semicolon</span>)<span class="op">|</span> <span class="ident">Statement</span>::<span class="ident">Escape</span>)
+        .<span class="ident">map</span>(<span class="op">|</span>(<span class="ident">_skip</span>, <span class="ident">_semicolon</span>)<span class="op">|</span> <span class="ident">Statement::Escape</span>)
         .<span class="ident">parse</span>(<span class="ident">input</span>)
 }
 
@@ -541,7 +541,7 @@
         <span class="ident">char</span>(<span class="string">&#39;;&#39;</span>),
     ))
     .<span class="ident">map</span>(
-        <span class="op">|</span>(<span class="ident">_if</span>, <span class="ident">condition</span>, <span class="ident">_then</span>, <span class="ident">then_branch</span>, <span class="ident">else_branch</span>, <span class="ident">_endif</span>, <span class="ident">_semicolon</span>)<span class="op">|</span> <span class="ident">Statement</span>::<span class="ident">If</span> {
+        <span class="op">|</span>(<span class="ident">_if</span>, <span class="ident">condition</span>, <span class="ident">_then</span>, <span class="ident">then_branch</span>, <span class="ident">else_branch</span>, <span class="ident">_endif</span>, <span class="ident">_semicolon</span>)<span class="op">|</span> <span class="ident">Statement::If</span> {
             <span class="ident">condition</span>,
             <span class="ident">then_branch</span>,
             <span class="ident">else_branch</span>,
@@ -552,7 +552,7 @@
 
 <span class="doccomment">/// 260 null_stmt = `;` .</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">null_stmt</span>(<span class="ident">input</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ParseResult</span><span class="op">&lt;</span><span class="ident">Statement</span><span class="op">&gt;</span> {
-    <span class="ident">char</span>(<span class="string">&#39;;&#39;</span>).<span class="ident">map</span>(<span class="op">|</span><span class="ident">_c</span><span class="op">|</span> <span class="ident">Statement</span>::<span class="ident">Null</span>).<span class="ident">parse</span>(<span class="ident">input</span>)
+    <span class="ident">char</span>(<span class="string">&#39;;&#39;</span>).<span class="ident">map</span>(<span class="op">|</span><span class="ident">_c</span><span class="op">|</span> <span class="ident">Statement::Null</span>).<span class="ident">parse</span>(<span class="ident">input</span>)
 }
 
 <span class="doccomment">/// 270 procedure_call_stmt = ( [built_in_procedure] | [procedure_ref] ) \[ [actual_parameter_list] \] `;` .</span>
@@ -560,13 +560,13 @@
     <span class="ident">tuple</span>((
         <span class="ident">alt</span>((
             <span class="ident">built_in_procedure</span>,
-            <span class="ident">procedure_ref</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">name</span><span class="op">|</span> <span class="ident">ProcedureCallName</span>::<span class="ident">Reference</span>(<span class="ident">name</span>)),
+            <span class="ident">procedure_ref</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">name</span><span class="op">|</span> <span class="ident">ProcedureCallName::Reference</span>(<span class="ident">name</span>)),
         )),
         <span class="ident">opt</span>(<span class="ident">actual_parameter_list</span>),
         <span class="ident">char</span>(<span class="string">&#39;;&#39;</span>),
     ))
     .<span class="ident">map</span>(
-        <span class="op">|</span>(<span class="ident">procedure</span>, <span class="ident">parameters</span>, <span class="ident">_semicolon</span>)<span class="op">|</span> <span class="ident">Statement</span>::<span class="ident">ProcedureCall</span> {
+        <span class="op">|</span>(<span class="ident">procedure</span>, <span class="ident">parameters</span>, <span class="ident">_semicolon</span>)<span class="op">|</span> <span class="ident">Statement::ProcedureCall</span> {
             <span class="ident">procedure</span>,
             <span class="ident">parameters</span>,
         },
@@ -577,8 +577,8 @@
 <span class="doccomment">/// 188 built_in_procedure = INSERT | REMOVE .</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">built_in_procedure</span>(<span class="ident">input</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ParseResult</span><span class="op">&lt;</span><span class="ident">ProcedureCallName</span><span class="op">&gt;</span> {
     <span class="ident">alt</span>((
-        <span class="ident">tag</span>(<span class="string">&quot;INSERT&quot;</span>).<span class="ident">map</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">ProcedureCallName</span>::<span class="ident">Insert</span>),
-        <span class="ident">tag</span>(<span class="string">&quot;REMOVE&quot;</span>).<span class="ident">map</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">ProcedureCallName</span>::<span class="ident">Remove</span>),
+        <span class="ident">tag</span>(<span class="string">&quot;INSERT&quot;</span>).<span class="ident">map</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">ProcedureCallName::Insert</span>),
+        <span class="ident">tag</span>(<span class="string">&quot;REMOVE&quot;</span>).<span class="ident">map</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">ProcedureCallName::Remove</span>),
     ))
     .<span class="ident">parse</span>(<span class="ident">input</span>)
 }
@@ -594,7 +594,7 @@
         <span class="ident">char</span>(<span class="string">&#39;;&#39;</span>),
     ))
     .<span class="ident">map</span>(
-        <span class="op">|</span>(<span class="ident">_repeat</span>, <span class="ident">control</span>, <span class="ident">_semicolon1</span>, <span class="ident">statements</span>, <span class="ident">_end</span>, <span class="ident">_semicolon2</span>)<span class="op">|</span> <span class="ident">Statement</span>::<span class="ident">Repeat</span> {
+        <span class="op">|</span>(<span class="ident">_repeat</span>, <span class="ident">control</span>, <span class="ident">_semicolon1</span>, <span class="ident">statements</span>, <span class="ident">_end</span>, <span class="ident">_semicolon2</span>)<span class="op">|</span> <span class="ident">Statement::Repeat</span> {
             <span class="ident">control</span>,
             <span class="ident">statements</span>,
         },
@@ -664,20 +664,20 @@
         <span class="ident">opt</span>(<span class="ident">tuple</span>((<span class="ident">char</span>(<span class="string">&#39;(&#39;</span>), <span class="ident">expression</span>, <span class="ident">char</span>(<span class="string">&#39;)&#39;</span>))).<span class="ident">map</span>(<span class="op">|</span>(<span class="ident">_open</span>, <span class="ident">expr</span>, <span class="ident">_close</span>)<span class="op">|</span> <span class="ident">expr</span>)),
         <span class="ident">char</span>(<span class="string">&#39;;&#39;</span>),
     ))
-    .<span class="ident">map</span>(<span class="op">|</span>(<span class="ident">_return</span>, <span class="ident">value</span>, <span class="ident">_semicolon</span>)<span class="op">|</span> <span class="ident">Statement</span>::<span class="ident">Return</span> { <span class="ident">value</span> })
+    .<span class="ident">map</span>(<span class="op">|</span>(<span class="ident">_return</span>, <span class="ident">value</span>, <span class="ident">_semicolon</span>)<span class="op">|</span> <span class="ident">Statement::Return</span> { <span class="ident">value</span> })
     .<span class="ident">parse</span>(<span class="ident">input</span>)
 }
 
 <span class="doccomment">/// 308 skip_stmt = SKIP `;` .</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">skip_stmt</span>(<span class="ident">input</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ParseResult</span><span class="op">&lt;</span><span class="ident">Statement</span><span class="op">&gt;</span> {
     <span class="ident">tuple</span>((<span class="ident">tag</span>(<span class="string">&quot;SKIP&quot;</span>), <span class="ident">char</span>(<span class="string">&#39;;&#39;</span>)))
-        .<span class="ident">map</span>(<span class="op">|</span>(<span class="ident">_skip</span>, <span class="ident">_semicolon</span>)<span class="op">|</span> <span class="ident">Statement</span>::<span class="ident">Skip</span>)
+        .<span class="ident">map</span>(<span class="op">|</span>(<span class="ident">_skip</span>, <span class="ident">_semicolon</span>)<span class="op">|</span> <span class="ident">Statement::Skip</span>)
         .<span class="ident">parse</span>(<span class="ident">input</span>)
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">mod</span> <span class="ident">tests</span> {
-    <span class="kw">use</span> <span class="ident">nom</span>::<span class="ident">Finish</span>;
+    <span class="kw">use</span> <span class="ident">nom::Finish</span>;
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">alias</span>() {
@@ -690,9 +690,9 @@
         END_ALIAS;
         &quot;#</span>
         .<span class="ident">trim</span>();
-        <span class="kw">let</span> (<span class="ident">residual</span>, (<span class="ident">result</span>, <span class="ident">_remark</span>)) <span class="op">=</span> <span class="kw">super</span>::<span class="ident">alias_stmt</span>(<span class="ident">exp_str</span>).<span class="ident">finish</span>().<span class="ident">unwrap</span>();
-        <span class="macro">dbg</span><span class="macro">!</span>(<span class="kw-2">&amp;</span><span class="ident">result</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">residual</span>, <span class="string">&quot;&quot;</span>);
+        <span class="kw">let</span> (<span class="ident">residual</span>, (<span class="ident">result</span>, <span class="ident">_remark</span>)) <span class="op">=</span> <span class="kw">super</span><span class="ident">::alias_stmt</span>(<span class="ident">exp_str</span>).<span class="ident">finish</span>().<span class="ident">unwrap</span>();
+        <span class="macro">dbg!</span>(<span class="kw-2">&amp;</span><span class="ident">result</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">residual</span>, <span class="string">&quot;&quot;</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
@@ -705,9 +705,9 @@
         END_IF;
         &quot;#</span>
         .<span class="ident">trim</span>();
-        <span class="kw">let</span> (<span class="ident">residual</span>, (<span class="ident">result</span>, <span class="ident">_remark</span>)) <span class="op">=</span> <span class="kw">super</span>::<span class="ident">if_stmt</span>(<span class="ident">exp_str</span>).<span class="ident">finish</span>().<span class="ident">unwrap</span>();
-        <span class="macro">dbg</span><span class="macro">!</span>(<span class="kw-2">&amp;</span><span class="ident">result</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">residual</span>, <span class="string">&quot;&quot;</span>);
+        <span class="kw">let</span> (<span class="ident">residual</span>, (<span class="ident">result</span>, <span class="ident">_remark</span>)) <span class="op">=</span> <span class="kw">super</span><span class="ident">::if_stmt</span>(<span class="ident">exp_str</span>).<span class="ident">finish</span>().<span class="ident">unwrap</span>();
+        <span class="macro">dbg!</span>(<span class="kw-2">&amp;</span><span class="ident">result</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">residual</span>, <span class="string">&quot;&quot;</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
@@ -721,9 +721,9 @@
         END_IF;
         &quot;#</span>
         .<span class="ident">trim</span>();
-        <span class="kw">let</span> (<span class="ident">residual</span>, (<span class="ident">result</span>, <span class="ident">_remark</span>)) <span class="op">=</span> <span class="kw">super</span>::<span class="ident">if_stmt</span>(<span class="ident">exp_str</span>).<span class="ident">finish</span>().<span class="ident">unwrap</span>();
-        <span class="macro">dbg</span><span class="macro">!</span>(<span class="kw-2">&amp;</span><span class="ident">result</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">residual</span>, <span class="string">&quot;&quot;</span>);
+        <span class="kw">let</span> (<span class="ident">residual</span>, (<span class="ident">result</span>, <span class="ident">_remark</span>)) <span class="op">=</span> <span class="kw">super</span><span class="ident">::if_stmt</span>(<span class="ident">exp_str</span>).<span class="ident">finish</span>().<span class="ident">unwrap</span>();
+        <span class="macro">dbg!</span>(<span class="kw-2">&amp;</span><span class="ident">result</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">residual</span>, <span class="string">&quot;&quot;</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
@@ -733,9 +733,9 @@
         INSERT (point_list, this_point, here );
         &quot;#</span>
         .<span class="ident">trim</span>();
-        <span class="kw">let</span> (<span class="ident">residual</span>, (<span class="ident">result</span>, <span class="ident">_remark</span>)) <span class="op">=</span> <span class="kw">super</span>::<span class="ident">procedure_call_stmt</span>(<span class="ident">exp_str</span>).<span class="ident">finish</span>().<span class="ident">unwrap</span>();
-        <span class="macro">dbg</span><span class="macro">!</span>(<span class="kw-2">&amp;</span><span class="ident">result</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">residual</span>, <span class="string">&quot;&quot;</span>);
+        <span class="kw">let</span> (<span class="ident">residual</span>, (<span class="ident">result</span>, <span class="ident">_remark</span>)) <span class="op">=</span> <span class="kw">super</span><span class="ident">::procedure_call_stmt</span>(<span class="ident">exp_str</span>).<span class="ident">finish</span>().<span class="ident">unwrap</span>();
+        <span class="macro">dbg!</span>(<span class="kw-2">&amp;</span><span class="ident">result</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">residual</span>, <span class="string">&quot;&quot;</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
@@ -745,9 +745,9 @@
         RETURN (SQRT((s.x - e.x)**2 + (s.y - e.y)**2 + (s.z - e.z)**2));
         &quot;#</span>
         .<span class="ident">trim</span>();
-        <span class="kw">let</span> (<span class="ident">residual</span>, (<span class="ident">result</span>, <span class="ident">_remark</span>)) <span class="op">=</span> <span class="kw">super</span>::<span class="ident">return_stmt</span>(<span class="ident">exp_str</span>).<span class="ident">finish</span>().<span class="ident">unwrap</span>();
-        <span class="macro">dbg</span><span class="macro">!</span>(<span class="kw-2">&amp;</span><span class="ident">result</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">residual</span>, <span class="string">&quot;&quot;</span>);
+        <span class="kw">let</span> (<span class="ident">residual</span>, (<span class="ident">result</span>, <span class="ident">_remark</span>)) <span class="op">=</span> <span class="kw">super</span><span class="ident">::return_stmt</span>(<span class="ident">exp_str</span>).<span class="ident">finish</span>().<span class="ident">unwrap</span>();
+        <span class="macro">dbg!</span>(<span class="kw-2">&amp;</span><span class="ident">result</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">residual</span>, <span class="string">&quot;&quot;</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
@@ -757,9 +757,9 @@
         RETURN ((type1 IN USEDIN(sample, &#39;&#39;)) AND (type2 IN USEDIN(sample, &#39;&#39;)));
         &quot;#</span>
         .<span class="ident">trim</span>();
-        <span class="kw">let</span> (<span class="ident">residual</span>, (<span class="ident">result</span>, <span class="ident">_remark</span>)) <span class="op">=</span> <span class="kw">super</span>::<span class="ident">return_stmt</span>(<span class="ident">exp_str</span>).<span class="ident">finish</span>().<span class="ident">unwrap</span>();
-        <span class="macro">dbg</span><span class="macro">!</span>(<span class="kw-2">&amp;</span><span class="ident">result</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">residual</span>, <span class="string">&quot;&quot;</span>);
+        <span class="kw">let</span> (<span class="ident">residual</span>, (<span class="ident">result</span>, <span class="ident">_remark</span>)) <span class="op">=</span> <span class="kw">super</span><span class="ident">::return_stmt</span>(<span class="ident">exp_str</span>).<span class="ident">finish</span>().<span class="ident">unwrap</span>();
+        <span class="macro">dbg!</span>(<span class="kw-2">&amp;</span><span class="ident">result</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">residual</span>, <span class="string">&quot;&quot;</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
@@ -769,9 +769,9 @@
         RETURN;
         &quot;#</span>
         .<span class="ident">trim</span>();
-        <span class="kw">let</span> (<span class="ident">residual</span>, (<span class="ident">result</span>, <span class="ident">_remark</span>)) <span class="op">=</span> <span class="kw">super</span>::<span class="ident">return_stmt</span>(<span class="ident">exp_str</span>).<span class="ident">finish</span>().<span class="ident">unwrap</span>();
-        <span class="macro">dbg</span><span class="macro">!</span>(<span class="kw-2">&amp;</span><span class="ident">result</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">residual</span>, <span class="string">&quot;&quot;</span>);
+        <span class="kw">let</span> (<span class="ident">residual</span>, (<span class="ident">result</span>, <span class="ident">_remark</span>)) <span class="op">=</span> <span class="kw">super</span><span class="ident">::return_stmt</span>(<span class="ident">exp_str</span>).<span class="ident">finish</span>().<span class="ident">unwrap</span>();
+        <span class="macro">dbg!</span>(<span class="kw-2">&amp;</span><span class="ident">result</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">residual</span>, <span class="string">&quot;&quot;</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
@@ -781,9 +781,9 @@
         SKIP;
         &quot;#</span>
         .<span class="ident">trim</span>();
-        <span class="kw">let</span> (<span class="ident">residual</span>, (<span class="ident">result</span>, <span class="ident">_remark</span>)) <span class="op">=</span> <span class="kw">super</span>::<span class="ident">skip_stmt</span>(<span class="ident">exp_str</span>).<span class="ident">finish</span>().<span class="ident">unwrap</span>();
-        <span class="macro">dbg</span><span class="macro">!</span>(<span class="kw-2">&amp;</span><span class="ident">result</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">residual</span>, <span class="string">&quot;&quot;</span>);
+        <span class="kw">let</span> (<span class="ident">residual</span>, (<span class="ident">result</span>, <span class="ident">_remark</span>)) <span class="op">=</span> <span class="kw">super</span><span class="ident">::skip_stmt</span>(<span class="ident">exp_str</span>).<span class="ident">finish</span>().<span class="ident">unwrap</span>();
+        <span class="macro">dbg!</span>(<span class="kw-2">&amp;</span><span class="ident">result</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">residual</span>, <span class="string">&quot;&quot;</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
@@ -797,9 +797,9 @@
         END_REPEAT;
         &quot;#</span>
         .<span class="ident">trim</span>();
-        <span class="kw">let</span> (<span class="ident">residual</span>, (<span class="ident">result</span>, <span class="ident">_remark</span>)) <span class="op">=</span> <span class="kw">super</span>::<span class="ident">repeat_stmt</span>(<span class="ident">exp_str</span>).<span class="ident">finish</span>().<span class="ident">unwrap</span>();
-        <span class="macro">dbg</span><span class="macro">!</span>(<span class="kw-2">&amp;</span><span class="ident">result</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">residual</span>, <span class="string">&quot;&quot;</span>);
+        <span class="kw">let</span> (<span class="ident">residual</span>, (<span class="ident">result</span>, <span class="ident">_remark</span>)) <span class="op">=</span> <span class="kw">super</span><span class="ident">::repeat_stmt</span>(<span class="ident">exp_str</span>).<span class="ident">finish</span>().<span class="ident">unwrap</span>();
+        <span class="macro">dbg!</span>(<span class="kw-2">&amp;</span><span class="ident">result</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">residual</span>, <span class="string">&quot;&quot;</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
@@ -811,11 +811,11 @@
         END_REPEAT;
         &quot;#</span>
         .<span class="ident">trim</span>();
-        <span class="kw">let</span> (<span class="ident">residual</span>, (<span class="ident">result</span>, <span class="ident">_remark</span>)) <span class="op">=</span> <span class="kw">super</span>::<span class="ident">repeat_stmt</span>(<span class="ident">exp_str</span>).<span class="ident">finish</span>().<span class="ident">unwrap</span>();
-        <span class="macro">dbg</span><span class="macro">!</span>(<span class="kw-2">&amp;</span><span class="ident">result</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">residual</span>, <span class="string">&quot;&quot;</span>);
+        <span class="kw">let</span> (<span class="ident">residual</span>, (<span class="ident">result</span>, <span class="ident">_remark</span>)) <span class="op">=</span> <span class="kw">super</span><span class="ident">::repeat_stmt</span>(<span class="ident">exp_str</span>).<span class="ident">finish</span>().<span class="ident">unwrap</span>();
+        <span class="macro">dbg!</span>(<span class="kw-2">&amp;</span><span class="ident">result</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">residual</span>, <span class="string">&quot;&quot;</span>);
     }
 }
 </pre></div>
-</section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="espr" data-search-js="../../../search-index.js"></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="espr" data-search-index-js="../../../search-index.js" data-search-js="../../../search.js"></div>
     <script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script></body></html>

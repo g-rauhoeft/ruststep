@@ -1,1 +1,0 @@
-initSidebarItems({"struct":[["Names","Names in each scopes"],["Namespace",""]]});

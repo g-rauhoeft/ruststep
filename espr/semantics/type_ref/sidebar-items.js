@@ -1,1 +1,0 @@
-initSidebarItems({"enum":[["TypeRef",""]],"struct":[["Bound",""],["SimpleType",""]]});
